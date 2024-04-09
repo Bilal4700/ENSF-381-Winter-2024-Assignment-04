@@ -1,80 +1,67 @@
 // LoginPage.js
 import React, { useState } from 'react';
-import Header from './Header';
-import LoginForm from './LoginForm';
-import SignupForm from './SignupForm';
-import Footer from './Footer';
+import { useNavigate } from 'react-router-dom'; 
 
-const LoginPage = () => {
-    const [showLoginForm, setShowLoginForm] = useState(true);
+const LoginPage = ({ setIsLoggedIn }) => {
+    const navigate = useNavigate(); 
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
-    const switchForm = () => {
-        setShowLoginForm(!showLoginForm);
-    };
+    const handleLoginSubmit = async (event) => {
+        event.preventDefault();
+        
+     
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
 
-    // Function to handle login form submission
-    const handleLogin = (userData) => {
-        fetch('/api/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userData),
-        })
-        .then(response => {
             if (response.ok) {
-                // Handle successful login
-                console.log('Login successful');
-                // You can redirect the user to another page upon successful login if needed
-            } else {
-                // Handle login error
-                console.error('Login failed');
-                // You can display an error message to the user
-            }
-        })
-        .catch(error => {
-            console.error('Error during login:', error);
-            // Handle network error or other issues
-        });
-    };
 
-    // Function to handle signup form submission
-    const handleSignup = (userData) => {
-        fetch('/api/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userData),
-        })
-        .then(response => {
-            if (response.ok) {
-                // Handle successful signup
-                console.log('Signup successful');
-                // You can redirect the user to another page upon successful signup if needed
+                setIsLoggedIn(true); 
+                
+                navigate('/products'); // Redirect to ProductPage
             } else {
-                // Handle signup error
-                console.error('Signup failed');
-                // You can display an error message to the user
+                // Handle unsuccessful login attempts here 
+                alert('Login failed. Please try again.');
             }
-        })
-        .catch(error => {
-            console.error('Error during signup:', error);
-            // Handle network error or other issues
-        });
+        } catch (error) {
+            console.error('Login error:', error);
+            alert('An error occurred. Please try again later.');
+        }
     };
 
     return (
         <div>
-            <Header />
-            {showLoginForm ? (
-                <LoginForm switchToSignup={switchForm} onSubmit={handleLogin} />
-            ) : (
-                <SignupForm switchToLogin={switchForm} onSubmit={handleSignup} />
-            )}
-            <Footer />
+            <h2>Login</h2>
+            <form onSubmit={handleLoginSubmit}>
+                <div>
+                    <label>Username:</label>
+                    <input
+                        type="text"
+                        placeholder="Enter your username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label>Password:</label>
+                    <input
+                        type="password"
+                        placeholder="Enter your password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+                <button type="submit">Login</button>
+            </form>
         </div>
     );
 };
 
 export default LoginPage;
+

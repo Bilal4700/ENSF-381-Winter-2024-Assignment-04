@@ -1,49 +1,47 @@
-// LoginForm.js
 import React, { useState } from 'react';
 
-const LoginForm = ({ switchToSignup, onSubmit }) => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+const LoginForm = ({ onSwitchToSignup, onLoginSubmit }) => {
+    const [user, setUser] = useState('');
+    const [pass, setPass] = useState('');
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // Perform form validation
-        if (username.trim() === '' || password.trim() === '') {
-            alert('Please fill in all fields.');
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        if (user.trim() === '' || pass.trim() === '') {
+            alert('Both username and password are required.');
             return;
         }
-        // Call the onSubmit function with form data
-        onSubmit({ username, password });
+        onLoginSubmit({ user, pass });
     };
 
     return (
         <div>
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
+            <h2>Log In</h2>
+            <form onSubmit={handleFormSubmit}>
                 <div>
                     <label>Username:</label>
                     <input
                         type="text"
-                        placeholder="Enter your username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Your username"
+                        value={user}
+                        onChange={(e) => setUser(e.target.value)}
                     />
                 </div>
                 <div>
                     <label>Password:</label>
                     <input
                         type="password"
-                        placeholder="Enter your password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Your password"
+                        value={pass}
+                        onChange={(e) => setPass(e.target.value)}
                     />
                 </div>
-                <button type="submit">Login</button>
+                <button type="submit">Log In</button>
             </form>
-            <p>Don't have an account? <button onClick={switchToSignup}>Signup</button></p>
+            <p>New here? <button onClick={onSwitchToSignup}>Sign Up</button></p>
         </div>
     );
 };
 
 export default LoginForm;
+
 

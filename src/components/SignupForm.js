@@ -1,73 +1,70 @@
 // SignupForm.js
 import React, { useState } from 'react';
 
-const SignupForm = ({ switchToLogin, onSubmit }) => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [email, setEmail] = useState('');
+const SignupForm = ({ onSwitchToLogin, onSignupSubmit }) => {
+    const [user, setUser] = useState('');
+    const [pass, setPass] = useState('');
+    const [confirmPass, setConfirmPass] = useState('');
+    const [mail, setMail] = useState('');
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // Perform form validation
-        if (username.trim() === '' || password.trim() === '' || confirmPassword.trim() === '' || email.trim() === '') {
-            alert('Please fill in all fields.');
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        if (user.trim() === '' || pass.trim() === '' || confirmPass.trim() === '' || mail.trim() === '') {
+            alert('All fields must be filled out.');
             return;
         }
-        if (password !== confirmPassword) {
+        if (pass !== confirmPass) {
             alert('Passwords do not match.');
             return;
         }
-        // Call the onSubmit function with form data
-        onSubmit({ username, password, email });
+        onSignupSubmit({ user, pass, mail });
     };
 
     return (
         <div>
-            <h2>Signup</h2>
-            <form onSubmit={handleSubmit}>
+            <h2>Sign Up</h2>
+            <form onSubmit={handleFormSubmit}>
                 <div>
                     <label>Username:</label>
                     <input
                         type="text"
-                        placeholder="Choose a username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Pick a username"
+                        value={user}
+                        onChange={(e) => setUser(e.target.value)}
                     />
                 </div>
                 <div>
                     <label>Password:</label>
                     <input
                         type="password"
-                        placeholder="Choose a password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Create a password"
+                        value={pass}
+                        onChange={(e) => setPass(e.target.value)}
                     />
                 </div>
                 <div>
                     <label>Confirm Password:</label>
                     <input
                         type="password"
-                        placeholder="Confirm your password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        placeholder="Repeat your password"
+                        value={confirmPass}
+                        onChange={(e) => setConfirmPass(e.target.value)}
                     />
                 </div>
                 <div>
                     <label>Email:</label>
                     <input
                         type="email"
-                        placeholder="Enter your email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Your email address"
+                        value={mail}
+                        onChange={(e) => setMail(e.target.value)}
                     />
                 </div>
-                <button type="submit">Signup</button>
+                <button type="submit">Sign Up</button>
             </form>
-            <p>Already have an account? <button onClick={switchToLogin}>Login</button></p>
+            <p>Already a member? <button onClick={onSwitchToLogin}>Log In</button></p>
         </div>
     );
 };
 
 export default SignupForm;
-
