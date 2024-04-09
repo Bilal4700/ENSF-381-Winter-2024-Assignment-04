@@ -1,9 +1,9 @@
+// Productpage.js
 import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import ProductList from './ProductList';
 import Cart from './Cart';
 import Footer from './Footer';
-import productsData from '../data/products';
 import { Link } from 'react-router-dom';
 
 const Productpage = () => {
@@ -14,13 +14,11 @@ const Productpage = () => {
     const storedCartItems = localStorage.getItem('cartItems');
     if (storedCartItems) {
       console.log("Loaded cart items from localStorage:", storedCartItems);
-      console.log("Loaded cart items in JSON", JSON.parse (storedCartItems));
+      console.log("Loaded cart items in JSON", JSON.parse(storedCartItems));
       setCartItems(JSON.parse(storedCartItems));
-  
     }
   }, []); 
 
-  
   useEffect(() => {
     console.log("Productpage component rerendered");
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
@@ -51,7 +49,7 @@ const Productpage = () => {
         }
       }
       return item;
-    }).filter(item => item !== null); // Filter out null entries to remove removed items from cart
+    }).filter(item => item !== null);
 
     console.log("Updated Cart Items:", updatedCartItems);
     setCartItems(updatedCartItems);
@@ -63,7 +61,7 @@ const Productpage = () => {
       <table>
         <tbody>
           <tr>
-            <td><ProductList products={productsData} onAddToCart={addToCart} /></td>
+            <td><ProductList onAddToCart={addToCart} /></td>
             <td style={{ verticalAlign: 'top' }}><Cart cartItems={cartItems} onRemove={removeFromCart} /></td>
           </tr>
         </tbody>
